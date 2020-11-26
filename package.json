@@ -6,7 +6,9 @@
   "private": true,
   "scripts": {
     "start": "webpack serve --hot",
-    "build": "cross-env NODE_ENV=production webpack"
+    "build": "cross-env NODE_ENV=production webpack",
+    "lint": "tsc --noEmit && eslint . --ext .js,.tsx,.ts",
+    "lint:fix": "eslint . --ext .js,.tsx,.ts --fix"
   },
   "author": "",
   "devDependencies": {
@@ -17,10 +19,17 @@
     "@types/react-dom": "^17.0.0",
     "@types/styled-components": "^5.1.4",
     "@types/webpack": "^4.41.25",
+    "@typescript-eslint/eslint-plugin": "^4.8.2",
+    "@typescript-eslint/parser": "^4.8.2",
     "babel-loader": "^8.2.1",
     "cross-env": "^7.0.2",
+    "eslint": "^7.14.0",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.21.5",
     "fork-ts-checker-webpack-plugin": "^6.0.3",
     "html-webpack-plugin": "^4.5.0",
+    "prettier": "^2.2.0",
     "react-refresh": "^0.9.0",
     "source-map-loader": "^1.1.2",
     "ts-loader": "^8.0.11",
