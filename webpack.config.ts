@@ -8,14 +8,20 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 
 const tsRuleUse: RuleSetUse = [{ loader: 'ts-loader', options: { transpileOnly: true } }];
 
-const plugins: (((this: Compiler, compiler: Compiler) => void) | WebpackPluginInstance)[] = [
+const plugins: (
+  | ((this: Compiler, compiler: Compiler) => void)
+  | WebpackPluginInstance
+)[] = [
   new ForkTsCheckerWebpackPlugin(),
   new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'src', 'index.html') }),
 ];
 
 if (isDevelopment) {
   // fast refresh
-  tsRuleUse.unshift({ loader: 'babel-loader', options: { plugins: ['react-refresh/babel'] } });
+  tsRuleUse.unshift({
+    loader: 'babel-loader',
+    options: { plugins: ['react-refresh/babel'] },
+  });
   plugins.unshift(new ReactRefreshPlugin());
 }
 

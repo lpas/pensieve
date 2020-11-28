@@ -10,9 +10,15 @@
     "lint": "tsc --noEmit && eslint . --ext .js,.tsx,.ts",
     "lint:fix": "eslint . --ext .js,.tsx,.ts --fix"
   },
+  "comment": {
+    "devDependencies":{
+      "@babel/runtime": "currently needed for zustand" 
+    }
+  },
   "author": "",
   "devDependencies": {
     "@babel/core": "^7.12.9",
+    "@babel/runtime": "^7.12.5",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
     "@types/node": "^14.14.10",
     "@types/react": "^17.0.0",
@@ -42,6 +48,7 @@
   "dependencies": {
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "styled-components": "^5.2.1"
+    "styled-components": "^5.2.1",
+    "zustand": "^3.2.0"
   }
 }
