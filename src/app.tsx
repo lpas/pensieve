@@ -2,19 +2,18 @@ import React from 'react';
 import { StyleSheetManager } from 'styled-components';
 import { TABLES, VIEWS } from './dummy_data/misc';
 import { GlobalStyle } from './globalStyle';
-import { Data } from './views/data';
+import { Data, DataWrapper } from './views/data';
+import { EditorView } from './views/editorView';
 import { CodeIcon, SplitIcon, TableIcon, ViewIcon } from './views/icons';
 import {
   ActivityBar,
   Dragger,
-  Editor,
   HeaderBar,
   HeaderOptions,
   Item,
   Li,
   Main,
   SideBar,
-  TableWrapper,
   Wrapper,
 } from './views/misc';
 import { Tabs, useTabStore } from './views/Tabs';
@@ -24,7 +23,7 @@ export const App: React.FC = () => {
   const [tables] = React.useState(TABLES.slice(0, 40));
   const [views] = React.useState(VIEWS);
   const [showSideBar, setShowSideBar] = React.useState(true);
-  const [sideBarItem, setSideBarItem] = React.useState<'table' | 'code'>('table');
+  const [sideBarItem, setSideBarItem] = React.useState<'table' | 'code'>('code');
   const resizing = React.useRef<null | { startPos: number; startWidth: number }>(null);
   const [width, setWidth] = React.useState(300);
 
@@ -144,15 +143,17 @@ export const App: React.FC = () => {
                 <SplitIcon />
               </HeaderOptions>
             </HeaderBar>
-            <TableWrapper>
-              {sideBarItem === 'table' ? (
-                activeTab === null ? null : (
+            {sideBarItem === 'table' ? (
+              activeTab === null ? null : (
+                <DataWrapper>
                   <Data />
-                )
-              ) : (
-                <Editor />
-              )}
-            </TableWrapper>
+                </DataWrapper>
+              )
+            ) : (
+              <div style={{ overflow: 'auto' }}>
+                <EditorView />
+              </div>
+            )}
           </Main>
         </Wrapper>
         <GlobalStyle />

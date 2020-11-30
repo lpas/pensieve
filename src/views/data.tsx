@@ -27,11 +27,17 @@ export const Data = React.memo(() => {
 
 Data.displayName = 'Data';
 
+export const DataWrapper = styled.div`
+  border-top: 0.05rem solid #555;
+  overflow: auto;
+`;
+
 const Table = styled.table`
   white-space: nowrap;
   border-collapse: collapse;
   width: 100%;
   max-width: 100%;
+  color: #dcdcdc;
   td,
   th {
     text-align: inherit;

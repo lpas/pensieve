@@ -11,8 +11,8 @@
     "lint:fix": "eslint . --ext .js,.tsx,.ts --fix"
   },
   "comment": {
-    "devDependencies":{
-      "@babel/runtime": "currently needed for zustand" 
+    "devDependencies": {
+      "@babel/runtime": "currently needed for zustand"
     }
   },
   "author": "",
@@ -46,6 +46,7 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
+    "@codemirror/next": "^0.14.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "styled-components": "^5.2.1",

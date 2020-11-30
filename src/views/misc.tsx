@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
@@ -41,6 +40,7 @@ export const Li = styled.li`
   overflow: hidden;
   &.active {
     background: #094771;
+    color: #fff;
   }
   &:not(.active):hover {
     background: rgba(55, 55, 55, 0.5);
@@ -89,8 +89,6 @@ export const Dragger = styled.div`
   cursor: ew-resize;
 `;
 
-export const Editor: React.FC = () => <div />;
-
 export const HeaderOptions = styled.div`
   cursor: not-allowed;
   color: #fff;
@@ -111,5 +109,4 @@ export const HeaderBar = styled.div`
 export const TableWrapper = styled.div`
   color: #fff;
   overflow: auto;
-  flex: 1;
 `;
