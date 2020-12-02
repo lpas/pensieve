@@ -4,7 +4,7 @@ import { DATA1, HEADER } from '../dummy_data/data1';
 
 export const Data = React.memo(() => {
   return (
-    <Table>
+    <Table onScroll={() => console.log('jo')}>
       <thead>
         <tr>
           {HEADER.map((line, index) => (
@@ -27,14 +27,51 @@ export const Data = React.memo(() => {
 
 Data.displayName = 'Data';
 
-export const DataWrapper = styled.div`
+const DataWrapper2 = styled.div`
   border-top: 0.05rem solid #555;
   overflow: auto;
+  &.sticky th:after {
+    content: '';
+    display: block;
+    background: linear-gradient(0, transparent, black);
+    width: 100%;
+    position: absolute;
+    height: 0.5rem;
+    z-index: 2;
+    bottom: -0.5rem;
+    left: -0;
+  }
 `;
+
+export const DataWrapper: React.FunctionComponent = (props) => {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const [atTop, setAtTop] = React.useState(true);
+  React.useEffect(() => {
+    console.log('new scroll');
+    const scrollX = (e: Event) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const top = e.currentTarget.scrollTop;
+      setAtTop(top === 0); // todo debounce
+    };
+    const options = { capture: true, passive: true };
+    ref.current?.addEventListener('scroll', scrollX, options);
+    return () => {
+      ref.current?.removeEventListener('scroll', scrollX, options);
+    };
+  }, []);
+
+  return (
+    <DataWrapper2 ref={ref} className={!atTop ? 'sticky' : ''}>
+      {props.children}
+    </DataWrapper2>
+  );
+};
 
 const Table = styled.table`
   white-space: nowrap;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   width: 100%;
   max-width: 100%;
   color: #dcdcdc;
@@ -45,6 +82,8 @@ const Table = styled.table`
     padding: 0.3rem 0.75rem; /* TODO .75 for bigger size make this optional */
     vertical-align: top;
     border: 0.05rem solid #555;
+    border-top: none;
+    border-right: none;
   }
   th {
     border-top: none;
