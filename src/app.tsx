@@ -2,30 +2,46 @@ import React from 'react';
 import { StyleSheetManager } from 'styled-components';
 import { TABLES, VIEWS } from './dummy_data/misc';
 import { GlobalStyle } from './globalStyle';
+import {
+  ConnectSideBar,
+  ConnectView,
+  initialConnection,
+  useConnectionStore,
+} from './views/connectView';
 import { Data, DataWrapper } from './views/data';
 import { EditorView } from './views/editorView';
-import { CodeIcon, SplitIcon, TableIcon, ViewIcon } from './views/icons';
+import { AddIcon, CodeIcon, SplitIcon, TableIcon } from './views/icons';
 import {
   ActivityBar,
+  CodeSideBar,
   Dragger,
   HeaderBar,
   HeaderOptions,
   Item,
-  Li,
   Main,
   SideBar,
+  TableSideBar,
   Wrapper,
 } from './views/misc';
-import { Tabs, useTabStore } from './views/Tabs';
+import { Tabs, useTabStore } from './views/tabs';
+
+type ActivityItemTypes = 'table' | 'code' | 'add';
+
+const activityBarItems: Array<{ key: ActivityItemTypes; icon: React.ReactElement }> = [
+  { key: 'table', icon: <TableIcon /> },
+  { key: 'code', icon: <CodeIcon /> },
+  { key: 'add', icon: <AddIcon /> },
+];
 
 // todo scroll to new active tab
 export const App: React.FC = () => {
   const [tables] = React.useState(TABLES.slice(0, 40));
   const [views] = React.useState(VIEWS);
   const [showSideBar, setShowSideBar] = React.useState(true);
-  const [sideBarItem, setSideBarItem] = React.useState<'table' | 'code'>('code');
+  const [activeItem, setActiveItem] = React.useState<ActivityItemTypes>('add');
   const resizing = React.useRef<null | { startPos: number; startWidth: number }>(null);
   const [width, setWidth] = React.useState(300);
+  const addConnection = useConnectionStore((state) => state.add);
 
   const activeTab = useTabStore((state) => state.activeTab);
   const addTab = useTabStore((state) => state.addTab);
@@ -34,9 +50,9 @@ export const App: React.FC = () => {
   //////////////
   //  global disable right click
   //////////////
-  React.useEffect(() => {
-    window.oncontextmenu = () => false;
-  }, []);
+  // React.useEffect(() => {
+  //   window.oncontextmenu = () => false;
+  // }, []);
 
   //////////////
   //  SideBar sizing
@@ -63,6 +79,25 @@ export const App: React.FC = () => {
     addTab({ name: tables[0], type: 'table' });
     addTab({ name: tables[3], type: 'table' });
     addTab({ name: views[0], type: 'view' });
+    // init some connections
+    addConnection({
+      ...initialConnection,
+      name: 'somename',
+      host: 'localhost',
+      color: '#f37736',
+    });
+    addConnection({
+      ...initialConnection,
+      name: '',
+      host: 'localhost',
+      color: '#fed766',
+    });
+    addConnection({
+      ...initialConnection,
+      name: 'this is a long name or something like this',
+      host: 'localhost',
+      color: '#2ab7ca',
+    });
   }, []);
 
   React.useEffect(() => {
@@ -77,61 +112,32 @@ export const App: React.FC = () => {
     resizing.current = { startPos: e.clientX, startWidth: width };
   };
 
-  const tableSideBarClick = (name: string, type: 'table' | 'view') => {
-    addTab({ name, type });
-  };
-
   return (
     <StyleSheetManager disableVendorPrefixes>
       <>
         <Wrapper>
           <ActivityBar>
-            <Item
-              className={showSideBar && sideBarItem === 'table' ? 'active' : ''}
-              onClick={() => {
-                setShowSideBar(sideBarItem !== 'table' ? true : !showSideBar);
-                setSideBarItem('table');
-              }}>
-              <TableIcon />
-            </Item>
-            <Item
-              className={showSideBar && sideBarItem === 'code' ? 'active' : ''}
-              onClick={() => {
-                setShowSideBar(sideBarItem !== 'code' ? true : !showSideBar);
-                setSideBarItem('code');
-              }}>
-              <CodeIcon />
-            </Item>
+            {activityBarItems.map((item) => (
+              <Item
+                key={item.key}
+                className={showSideBar && activeItem === item.key ? 'active' : ''}
+                onClick={() => {
+                  setShowSideBar(activeItem !== item.key ? true : !showSideBar);
+                  setActiveItem(item.key);
+                }}>
+                {item.icon}
+              </Item>
+            ))}
           </ActivityBar>
           {showSideBar ? (
             <SideBar style={{ width }}>
-              <ul>
-                {tables.map((table) => (
-                  <Li
-                    key={table}
-                    className={
-                      activeTab?.type === 'table' && table === activeTab.name
-                        ? 'active'
-                        : ''
-                    }
-                    onClick={() => tableSideBarClick(table, 'table')}>
-                    <TableIcon /> {table}
-                  </Li>
-                ))}
-                {views.map((view, index) => (
-                  <Li
-                    key={index}
-                    className={
-                      activeTab?.type === 'view' && view === activeTab.name
-                        ? 'active'
-                        : ''
-                    }
-                    onClick={() => tableSideBarClick(view, 'view')}>
-                    <ViewIcon />
-                    {view}
-                  </Li>
-                ))}
-              </ul>
+              {activeItem === 'table' ? (
+                <TableSideBar />
+              ) : activeItem === 'code' ? (
+                <CodeSideBar />
+              ) : (
+                <ConnectSideBar />
+              )}
             </SideBar>
           ) : null}
           <Main>
@@ -143,15 +149,19 @@ export const App: React.FC = () => {
                 <SplitIcon />
               </HeaderOptions>
             </HeaderBar>
-            {sideBarItem === 'table' ? (
+            {activeItem === 'table' ? (
               activeTab === null ? null : (
                 <DataWrapper>
                   <Data />
                 </DataWrapper>
               )
-            ) : (
+            ) : activeItem === 'code' ? (
               <div style={{ overflow: 'auto' }}>
                 <EditorView />
+              </div>
+            ) : (
+              <div style={{ overflow: 'auto' }}>
+                <ConnectView />
               </div>
             )}
           </Main>

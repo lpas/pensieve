@@ -157,6 +157,6 @@ export const Tab = styled.div`
     width: 1rem;
     vertical-align: bottom;
     display: inline-block;
-    padding-right: 0.5rem;
+    margin-right: 0.5rem;
   }
 `;

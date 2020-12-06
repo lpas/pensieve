@@ -1,4 +1,8 @@
+import React from 'react';
 import styled from 'styled-components';
+import { TABLES, VIEWS } from '../dummy_data/misc';
+import { TableIcon, ViewIcon } from './icons';
+import { useTabStore } from './tabs';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -20,6 +24,10 @@ export const SideBar = styled.div`
   overflow: hidden;
   :hover {
     overflow: auto;
+  }
+  ul {
+    margin: 0;
+    padding: 0;
   }
 `;
 
@@ -50,7 +58,7 @@ export const Li = styled.li`
     height: 1rem;
     vertical-align: bottom;
     display: inline-block;
-    padding-right: 0.5rem;
+    margin-right: 0.5rem;
   }
 `;
 
@@ -60,7 +68,7 @@ export const Item = styled.div`
   svg {
     width: 60%;
     height: 60%;
-    padding: 20%;
+    margin: 20%;
   }
   opacity: 0.5;
   position: relative;
@@ -110,3 +118,43 @@ export const TableWrapper = styled.div`
   color: #fff;
   overflow: auto;
 `;
+
+export const TableSideBar: React.FC = () => {
+  const [tables] = React.useState(TABLES.slice(0, 40));
+  const [views] = React.useState(VIEWS);
+
+  const activeTab = useTabStore((state) => state.activeTab);
+  const addTab = useTabStore((state) => state.addTab);
+
+  const tableSideBarClick = (name: string, type: 'table' | 'view') => {
+    addTab({ name, type });
+  };
+
+  return (
+    <ul>
+      {tables.map((table) => (
+        <Li
+          key={table}
+          className={
+            activeTab?.type === 'table' && table === activeTab.name ? 'active' : ''
+          }
+          onClick={() => tableSideBarClick(table, 'table')}>
+          <TableIcon /> {table}
+        </Li>
+      ))}
+      {views.map((view, index) => (
+        <Li
+          key={index}
+          className={
+            activeTab?.type === 'view' && view === activeTab.name ? 'active' : ''
+          }
+          onClick={() => tableSideBarClick(view, 'view')}>
+          <ViewIcon />
+          {view}
+        </Li>
+      ))}
+    </ul>
+  );
+};
+
+export const CodeSideBar: React.FC = () => <div />;
