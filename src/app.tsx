@@ -8,7 +8,7 @@ import {
   initialConnection,
   useConnectionStore,
 } from './views/connectView';
-import { Data, DataWrapper } from './views/data';
+import { TableView } from './views/data';
 import { EditorView } from './views/editorView';
 import { AddIcon, CodeIcon, SplitIcon, TableIcon } from './views/icons';
 import {
@@ -151,9 +151,7 @@ export const App: React.FC = () => {
             </HeaderBar>
             {activeItem === 'table' ? (
               activeTab === null ? null : (
-                <DataWrapper>
-                  <Data />
-                </DataWrapper>
+                <TableView />
               )
             ) : activeItem === 'code' ? (
               <div style={{ overflow: 'auto' }}>

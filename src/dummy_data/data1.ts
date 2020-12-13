@@ -1,5 +1,5 @@
 export const HEADER = [
-  '',
+  'X',
   'Name',
   'Country',
   'Skills',

@@ -279,7 +279,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const Button = styled.button`
+export const Button = styled.button`
   border: 0;
   color: #e2e2e2;
   background-color: #008a19;
@@ -307,7 +307,7 @@ const Button = styled.button`
   outline: 0;
 `;
 
-const SecondaryButton = styled(Button)`
+export const SecondaryButton = styled(Button)`
   background-color: #1e1e1e;
   border: 0.1rem solid #3c3c43;
 `;
