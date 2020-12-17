@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheetManager } from 'styled-components';
-import { TABLES, VIEWS } from './dummy_data/misc';
 import { GlobalStyle } from './globalStyle';
 import {
   ConnectSideBar,
@@ -35,8 +34,6 @@ const activityBarItems: Array<{ key: ActivityItemTypes; icon: React.ReactElement
 
 // todo scroll to new active tab
 export const App: React.FC = () => {
-  const [tables] = React.useState(TABLES.slice(0, 40));
-  const [views] = React.useState(VIEWS);
   const [showSideBar, setShowSideBar] = React.useState(true);
   const [activeItem, setActiveItem] = React.useState<ActivityItemTypes>('add');
   const resizing = React.useRef<null | { startPos: number; startWidth: number }>(null);
@@ -44,7 +41,6 @@ export const App: React.FC = () => {
   const addConnection = useConnectionStore((state) => state.add);
 
   const activeTab = useTabStore((state) => state.activeTab);
-  const addTab = useTabStore((state) => state.addTab);
 
   // todocheck if this is needed in electron move this
   //////////////
@@ -76,9 +72,6 @@ export const App: React.FC = () => {
 
   React.useEffect(() => {
     // todo remove this just random init to see some tabs
-    addTab({ name: tables[0], type: 'table' });
-    addTab({ name: tables[3], type: 'table' });
-    addTab({ name: views[0], type: 'view' });
     // init some connections
     addConnection({
       ...initialConnection,

@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { DATA1, HEADER } from '../dummy_data/data1';
+import { TABLES } from '../dummy_data/tables';
 import { Button } from './connectView';
 import { FKeyIcon } from './icons';
+import { useTabStore } from './tabs';
 
 // todo keyboard nav in table
 
@@ -40,6 +41,10 @@ export const Data: React.FC<{
   const [data, setData] = React.useState<
     { line: React.ReactText[]; active: boolean; index: number }[]
   >(props.data.map((line, index) => ({ line, index, active: false })));
+
+  React.useEffect(() => {
+    setData(props.data.map((line, index) => ({ line, index, active: false })));
+  }, [props.data]);
 
   const filteredData = React.useMemo(() => {
     const filter = props.filter;
@@ -188,12 +193,17 @@ type FilterType = { col: string; operator: QueryOperator; queryString: string } 
 
 export const TableView: React.FC = () => {
   const [filter, setFilter] = React.useState<FilterType>(null);
+  const activeTab = useTabStore((state) => state.activeTab);
 
+  if (activeTab === null) return null;
+
+  const table = TABLES[activeTab.name as keyof typeof TABLES];
+  console.log({ activeTab });
   return (
     <>
-      <Filter header={HEADER} onChange={setFilter} />
+      <Filter header={table.data.header} onChange={setFilter} />
       <DataWrapper>
-        <Data data={DATA1} header={HEADER} filter={filter} />
+        <Data data={table.data.rows} header={table.data.header} filter={filter} />
       </DataWrapper>
     </>
   );

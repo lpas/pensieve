@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { TABLES, VIEWS } from '../dummy_data/misc';
+import { TABLES } from '../dummy_data/tables';
 import { TableIcon, ViewIcon } from './icons';
 import { useTabStore } from './tabs';
 
@@ -120,8 +120,8 @@ export const TableWrapper = styled.div`
 `;
 
 export const TableSideBar: React.FC = () => {
-  const [tables] = React.useState(TABLES.slice(0, 40));
-  const [views] = React.useState(VIEWS);
+  const [tables] = React.useState(Object.keys(TABLES));
+  const [views] = React.useState([]);
 
   const activeTab = useTabStore((state) => state.activeTab);
   const addTab = useTabStore((state) => state.addTab);

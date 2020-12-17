@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { DATA1, HEADER } from '../dummy_data/data1';
+import { TABLES } from '../dummy_data/tables';
 import { Data, DataWrapper } from './data';
 import { Editor } from './editor';
 import { SuccessIcon } from './icons';
@@ -15,7 +15,7 @@ export const EditorView: React.FC = () => {
         <RunButton>Run</RunButton>
       </ButtonLine>
       <DataWrapper>
-        <Data data={DATA1} header={HEADER} />
+        <Data data={TABLES.table1.data.rows} header={TABLES.table1.data.header} />
       </DataWrapper>
       <NotificationBar>
         <SuccessIcon /> Returned in 34 ms
