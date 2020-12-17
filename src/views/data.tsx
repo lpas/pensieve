@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { TABLES } from '../dummy_data/tables';
 import { Button } from './connectView';
 import { FKeyIcon } from './icons';
-import { useTabStore } from './tabs';
 
 // todo keyboard nav in table
 
@@ -82,7 +81,6 @@ export const Data: React.FC<{
     row: -1,
     cell: -1,
   });
-
   return (
     <Table>
       <thead>
@@ -191,20 +189,30 @@ const SortTH = styled.th<{ $order?: 'asc' | 'desc' }>`
 
 type FilterType = { col: string; operator: QueryOperator; queryString: string } | null;
 
-export const TableView: React.FC = () => {
+type TableType = typeof TABLES;
+
+interface TableViewProps {
+  table: TableType[keyof TableType];
+}
+
+export const TableView: React.FC<TableViewProps> = (props) => {
   const [filter, setFilter] = React.useState<FilterType>(null);
-  const activeTab = useTabStore((state) => state.activeTab);
-
-  if (activeTab === null) return null;
-
-  const table = TABLES[activeTab.name as keyof typeof TABLES];
-  console.log({ activeTab });
   return (
     <>
-      <Filter header={table.data.header} onChange={setFilter} />
-      <DataWrapper>
-        <Data data={table.data.rows} header={table.data.header} filter={filter} />
-      </DataWrapper>
+      <Filter header={props.table.data.header} onChange={setFilter} />
+
+      {React.useMemo(
+        () => (
+          <DataWrapper>
+            <Data
+              data={props.table.data.rows}
+              header={props.table.data.header}
+              filter={filter}
+            />
+          </DataWrapper>
+        ),
+        [props.table, filter],
+      )}
     </>
   );
 };

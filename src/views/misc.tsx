@@ -157,4 +157,13 @@ export const TableSideBar: React.FC = () => {
   );
 };
 
-export const CodeSideBar: React.FC = () => <div />;
+export const CodeSideBar: React.FC = () => {
+  const addTab = useTabStore((state) => state.addTab);
+  return (
+    <div>
+      <button onClick={() => addTab({ name: 'query', type: 'code' }, true, true)}>
+        NEW ONE
+      </button>
+    </div>
+  );
+};

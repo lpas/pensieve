@@ -2,7 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import create from 'zustand';
 import { combine } from 'zustand/middleware';
-import { TableIcon, ViewIcon } from './icons';
+import { TABLES } from '../dummy_data/tables';
+import { TableView } from './data';
+import { EditorView } from './editorView';
+import { SplitIcon, TableIcon, ViewIcon } from './icons';
+import { HeaderBar, HeaderOptions } from './misc';
 
 export interface TabData {
   name: string;
@@ -17,6 +21,39 @@ type TabState = {
 const initalState: TabState = {
   tabs: [],
   activeTab: null,
+};
+
+export const Pane: React.FC = () => {
+  const tabs = useTabStore((item) => item.tabs);
+  const activeTab = useTabStore((item) => item.activeTab);
+  return (
+    <>
+      <HeaderBar>
+        <Tabs />
+        {/* todo build panel splitting  */}
+        <HeaderOptions>
+          <SplitIcon />
+        </HeaderOptions>
+      </HeaderBar>
+      {tabs.map((tab, index) => (
+        <div
+          key={index}
+          style={{
+            display: tab == activeTab ? 'contents' : 'none',
+          }}>
+          {tab.type === 'table' ? (
+            <TableView table={TABLES[tab.name as keyof typeof TABLES]} />
+          ) : tab.type === 'code' ? (
+            <div style={{ overflow: 'auto' }}>
+              <EditorView />
+            </div>
+          ) : (
+            <div> view view ... </div>
+          )}
+        </div>
+      ))}
+    </>
+  );
 };
 
 const tabIsEqual = (a: TabData, b: TabData) => a.name === b.name && a.type === b.type;

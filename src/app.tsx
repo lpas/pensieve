@@ -7,22 +7,18 @@ import {
   initialConnection,
   useConnectionStore,
 } from './views/connectView';
-import { TableView } from './views/data';
-import { EditorView } from './views/editorView';
-import { AddIcon, CodeIcon, SplitIcon, TableIcon } from './views/icons';
+import { AddIcon, CodeIcon, TableIcon } from './views/icons';
 import {
   ActivityBar,
   CodeSideBar,
   Dragger,
-  HeaderBar,
-  HeaderOptions,
   Item,
   Main,
   SideBar,
   TableSideBar,
   Wrapper,
 } from './views/misc';
-import { Tabs, useTabStore } from './views/tabs';
+import { Pane } from './views/tabs';
 
 type ActivityItemTypes = 'table' | 'code' | 'add';
 
@@ -35,13 +31,10 @@ const activityBarItems: Array<{ key: ActivityItemTypes; icon: React.ReactElement
 // todo scroll to new active tab
 export const App: React.FC = () => {
   const [showSideBar, setShowSideBar] = React.useState(true);
-  const [activeItem, setActiveItem] = React.useState<ActivityItemTypes>('add');
+  const [activeItem, setActiveItem] = React.useState<ActivityItemTypes>('table');
   const resizing = React.useRef<null | { startPos: number; startWidth: number }>(null);
   const [width, setWidth] = React.useState(300);
   const addConnection = useConnectionStore((state) => state.add);
-
-  const activeTab = useTabStore((state) => state.activeTab);
-
   // todocheck if this is needed in electron move this
   //////////////
   //  global disable right click
@@ -135,25 +128,12 @@ export const App: React.FC = () => {
           ) : null}
           <Main>
             <Dragger onMouseDown={onMouseDown} />
-            <HeaderBar>
-              <Tabs />
-              {/* todo build panel splitting  */}
-              <HeaderOptions>
-                <SplitIcon />
-              </HeaderOptions>
-            </HeaderBar>
-            {activeItem === 'table' ? (
-              activeTab === null ? null : (
-                <TableView />
-              )
-            ) : activeItem === 'code' ? (
-              <div style={{ overflow: 'auto' }}>
-                <EditorView />
-              </div>
-            ) : (
+            {activeItem === 'add' ? (
               <div style={{ overflow: 'auto' }}>
                 <ConnectView />
               </div>
+            ) : (
+              <Pane />
             )}
           </Main>
         </Wrapper>
