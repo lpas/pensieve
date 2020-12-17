@@ -6,7 +6,7 @@ import { TABLES } from '../dummy_data/tables';
 import { TableView } from './data';
 import { EditorView } from './editorView';
 import { SplitIcon, TableIcon, ViewIcon } from './icons';
-import { HeaderBar, HeaderOptions } from './misc';
+import { HeaderBar, HeaderOptions, LoadingSpinner } from './misc';
 
 export interface TabData {
   name: string;
@@ -35,23 +35,33 @@ export const Pane: React.FC = () => {
           <SplitIcon />
         </HeaderOptions>
       </HeaderBar>
-      {tabs.map((tab, index) => (
+      {tabs.length > 0 ? (
+        tabs.map((tab, index) => (
+          <div
+            key={index}
+            style={{
+              display: tab == activeTab ? 'contents' : 'none',
+            }}>
+            {tab.type === 'table' ? (
+              <TableView table={TABLES[tab.name as keyof typeof TABLES]} />
+            ) : tab.type === 'code' ? (
+              <div style={{ overflow: 'auto' }}>
+                <EditorView />
+              </div>
+            ) : (
+              <div> view view ... </div>
+            )}
+          </div>
+        ))
+      ) : (
         <div
-          key={index}
           style={{
-            display: tab == activeTab ? 'contents' : 'none',
+            display: 'flex',
+            height: '100%',
           }}>
-          {tab.type === 'table' ? (
-            <TableView table={TABLES[tab.name as keyof typeof TABLES]} />
-          ) : tab.type === 'code' ? (
-            <div style={{ overflow: 'auto' }}>
-              <EditorView />
-            </div>
-          ) : (
-            <div> view view ... </div>
-          )}
+          <LoadingSpinner style={{ margin: 'auto' }} />
         </div>
-      ))}
+      )}
     </>
   );
 };

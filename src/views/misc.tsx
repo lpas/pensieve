@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { TABLES } from '../dummy_data/tables';
 import { TableIcon, ViewIcon } from './icons';
 import { useTabStore } from './tabs';
@@ -161,9 +161,44 @@ export const CodeSideBar: React.FC = () => {
   const addTab = useTabStore((state) => state.addTab);
   return (
     <div>
+      <LoadingSpinner />
       <button onClick={() => addTab({ name: 'query', type: 'code' }, true, true)}>
         NEW ONE
       </button>
     </div>
   );
 };
+
+const rotate = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+export const LoadingSpinner = styled.span`
+  width: 3rem;
+  height: 3rem;
+  display: inline-block;
+  border-radius: 50%;
+  border: 0.25rem solid rgb(55, 154, 246, 0.5);
+  position: relative;
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    position: absolute;
+    left: -0.25rem;
+    top: -0.25rem;
+    bottom: -0.25rem;
+    right: -0.25rem;
+    border-right: 0.25rem solid rgb(55, 154, 246);
+    border-top: 0.25rem solid rgb(55, 154, 246);
+    border-radius: 50%;
+    border-bottom-color: transparent;
+    animation: ${rotate} 1.5s linear infinite;
+  }
+`;
