@@ -8,6 +8,7 @@ import {
   useConnectionStore,
 } from './views/connectView';
 import { AddIcon, CodeIcon, TableIcon } from './views/icons';
+import { LogPanel } from './views/logPanel';
 import {
   ActivityBar,
   CodeSideBar,
@@ -135,6 +136,7 @@ export const App: React.FC = () => {
             ) : (
               <Pane />
             )}
+            <LogPanel />
           </Main>
         </Wrapper>
         <GlobalStyle />

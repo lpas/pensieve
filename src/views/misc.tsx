@@ -112,6 +112,11 @@ export const HeaderOptions = styled.div`
 export const HeaderBar = styled.div`
   height: 2.5rem;
   display: flex;
+  & ::-webkit-scrollbar {
+    width: 12px;
+    height: 2px;
+    background-color: transparent;
+  }
 `;
 
 export const TableWrapper = styled.div`

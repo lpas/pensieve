@@ -32,13 +32,17 @@ samp {
 }
 
 ::-webkit-scrollbar{
-    width: 12px;
-    height: 3px;
-    background-color: transparent;
+  width: 12px;
+  height: 12px;
+  background-color: transparent;
 }
 
 ::-webkit-scrollbar-thumb{
 	background-color: #464646;
 } 
+
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
 
 `;
