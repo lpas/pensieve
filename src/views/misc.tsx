@@ -121,7 +121,7 @@ export const TableWrapper = styled.div`
 
 export const TableSideBar: React.FC = () => {
   const [tables] = React.useState(Object.keys(TABLES));
-  const [views] = React.useState([]);
+  const [views] = React.useState(['view1', 'view2', 'view3']);
 
   const activeTab = useTabStore((state) => state.activeTab);
   const addTab = useTabStore((state) => state.addTab);
@@ -129,33 +129,80 @@ export const TableSideBar: React.FC = () => {
   const tableSideBarClick = (name: string, type: 'table' | 'view') => {
     addTab({ name, type });
   };
+  const [active, setActive] = React.useState({ tables: true, views: false });
 
   return (
-    <ul>
-      {tables.map((table) => (
-        <Li
-          key={table}
-          className={
-            activeTab?.type === 'table' && table === activeTab.name ? 'active' : ''
-          }
-          onClick={() => tableSideBarClick(table, 'table')}>
-          <TableIcon /> {table}
-        </Li>
-      ))}
-      {views.map((view, index) => (
-        <Li
-          key={index}
-          className={
-            activeTab?.type === 'view' && view === activeTab.name ? 'active' : ''
-          }
-          onClick={() => tableSideBarClick(view, 'view')}>
-          <ViewIcon />
-          {view}
-        </Li>
-      ))}
-    </ul>
+    <>
+      <TableViewSwitch>
+        <button
+          className={active.tables === true ? 'active' : ''}
+          onClick={() => setActive({ ...active, tables: !active.tables })}>
+          Tables
+        </button>
+        <button
+          className={active.views === true ? 'active' : ''}
+          onClick={() => setActive({ ...active, views: !active.views })}>
+          Views
+        </button>
+      </TableViewSwitch>
+      <ul>
+        {active.tables
+          ? tables.map((table) => (
+              <Li
+                key={table}
+                className={
+                  activeTab?.type === 'table' && table === activeTab.name ? 'active' : ''
+                }
+                onClick={() => tableSideBarClick(table, 'table')}>
+                <TableIcon /> {table}
+              </Li>
+            ))
+          : null}
+        {active.views
+          ? views.map((view, index) => (
+              <Li
+                key={index}
+                className={
+                  activeTab?.type === 'view' && view === activeTab.name ? 'active' : ''
+                }
+                onClick={() => tableSideBarClick(view, 'view')}>
+                <ViewIcon />
+                {view}
+              </Li>
+            ))
+          : null}
+      </ul>
+    </>
   );
 };
+
+const TableViewSwitch = styled.div`
+  width: 100%;
+  display: flex;
+  background: #1e1e1e;
+  padding: 0.25rem;
+  gap: 0.25rem;
+  & button {
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1.5;
+    flex: 1;
+    border: 0;
+    height: 1.5rem;
+    outline: none;
+    font-size: 1rem;
+    transition: filter 0.15s ease-in-out;
+    color: #e2e2e2e2;
+    :hover {
+      filter: brightness(0.8);
+    }
+    background: #1e1e1e;
+  }
+  & .active {
+    background-color: #008a19;
+    color: #e2e2e2;
+  }
+`;
 
 export const CodeSideBar: React.FC = () => {
   const addTab = useTabStore((state) => state.addTab);
