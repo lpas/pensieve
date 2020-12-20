@@ -2,7 +2,19 @@ import React from 'react';
 import styled from 'styled-components';
 import { TABLES } from '../dummy_data/tables';
 import { Button } from './connectView';
-import { FKeyIcon } from './icons';
+import {
+  CommitIcon,
+  DelIcon,
+  EndIcon,
+  FKeyIcon,
+  FunnelIcon,
+  NextIcon,
+  PlusIcon,
+  PrevIcon,
+  RefreshIcon,
+  StartIcon,
+  UndoIcon,
+} from './icons';
 
 // todo keyboard nav in table
 
@@ -32,17 +44,32 @@ export const Data: React.FC<{
   header: string[];
   filter?: FilterType;
 }> = (props) => {
-  const [sort, setSort] = React.useState<{ index: number; order: 'asc' | 'desc' }>({
-    index: 0,
-    order: 'asc',
-  });
+  const [sort, setSort] = React.useState<{ index: number; order: 'asc' | 'desc' } | null>(
+    null,
+  );
 
   const [data, setData] = React.useState<
-    { line: React.ReactText[]; active: boolean; index: number }[]
-  >(props.data.map((line, index) => ({ line, index, active: false })));
+    {
+      line: React.ReactText[];
+      active: boolean;
+      index: number;
+    }[]
+  >(
+    props.data.map((line, index) => ({
+      line,
+      index,
+      active: false,
+    })),
+  );
 
   React.useEffect(() => {
-    setData(props.data.map((line, index) => ({ line, index, active: false })));
+    setData(
+      props.data.map((line, index) => ({
+        line,
+        index,
+        active: false,
+      })),
+    );
   }, [props.data]);
 
   const filteredData = React.useMemo(() => {
@@ -56,30 +83,37 @@ export const Data: React.FC<{
 
   const sortedData = React.useMemo(
     () =>
-      [...filteredData].sort((item1, item2) => {
-        const a = item1.line[sort.index];
-        const b = item2.line[sort.index];
-        const m = sort.order === 'asc' ? 1 : -1;
+      sort == null
+        ? filteredData
+        : [...filteredData].sort((item1, item2) => {
+            const a = item1.line[sort.index];
+            const b = item2.line[sort.index];
+            const m = sort.order === 'asc' ? 1 : -1;
 
-        return (
-          m *
-          (a == null && b == null
-            ? 0
-            : a == null
-            ? -1
-            : typeof a === 'string' && (typeof b === 'string' || b == null)
-            ? a.localeCompare(b)
-            : typeof a === 'number' && typeof b === 'number'
-            ? a - b
-            : 1)
-        );
-      }),
+            return (
+              m *
+              (a == null && b == null
+                ? 0
+                : a == null
+                ? -1
+                : typeof a === 'string' && (typeof b === 'string' || b == null)
+                ? a.localeCompare(b)
+                : typeof a === 'number' && typeof b === 'number'
+                ? a - b
+                : 1)
+            );
+          }),
     [sort, filteredData],
   );
 
-  const [activeCell, setActiveCell] = React.useState<{ row: number; cell: number }>({
+  const [activeCell, setActiveCell] = React.useState<{
+    row: number;
+    cell: number;
+    edit: boolean;
+  }>({
     row: -1,
     cell: -1,
+    edit: false,
   });
   return (
     <Table>
@@ -87,12 +121,17 @@ export const Data: React.FC<{
         <tr>
           {props.header.map((line, index) => (
             <SortTH
-              $order={index === sort.index ? sort.order : undefined}
+              $order={index === sort?.index ? sort.order : undefined}
               onClick={() =>
-                setSort({
-                  index,
-                  order: index === sort.index && sort.order === 'asc' ? 'desc' : 'asc',
-                })
+                setSort(
+                  index === sort?.index && sort.order === 'desc'
+                    ? null
+                    : {
+                        index,
+                        order:
+                          index === sort?.index && sort.order === 'asc' ? 'desc' : 'asc',
+                      },
+                )
               }
               key={index}>
               {line}
@@ -126,11 +165,30 @@ export const Data: React.FC<{
                 key={cellIndex}
                 className={
                   activeCell.row === row.index && activeCell.cell === cellIndex
-                    ? 'active'
+                    ? activeCell.edit
+                      ? 'active edit'
+                      : 'active'
                     : ''
                 }
-                onClick={() => setActiveCell({ row: row.index, cell: cellIndex })}>
-                {item}{' '}
+                onClick={() =>
+                  setActiveCell({
+                    row: row.index,
+                    cell: cellIndex,
+                    edit: activeCell.row === row.index && activeCell.cell == cellIndex,
+                  })
+                }>
+                {activeCell.row === row.index &&
+                activeCell.cell === cellIndex &&
+                activeCell.edit ? (
+                  <Input
+                    type="text"
+                    defaultValue={item}
+                    autoFocus
+                    onFocus={(e) => e.currentTarget.select()}
+                  />
+                ) : (
+                  item
+                )}{' '}
                 {cellIndex === 4 ? (
                   <FKey>
                     <FKeyIcon />
@@ -196,10 +254,50 @@ interface TableViewProps {
 }
 
 export const TableView: React.FC<TableViewProps> = (props) => {
+  const [showFilter, setShowFilter] = React.useState(true);
   const [filter, setFilter] = React.useState<FilterType>(null);
   return (
     <>
-      <Filter header={props.table.data.header} onChange={setFilter} />
+      <MenuBar>
+        <MenuButton $disabled>
+          <StartIcon />
+        </MenuButton>
+        <MenuButton $disabled>
+          <PrevIcon />
+        </MenuButton>
+        1-100 100+
+        <MenuButton>
+          <NextIcon />
+        </MenuButton>
+        <MenuButton>
+          <EndIcon />
+        </MenuButton>
+        <MenuDivider />
+        <MenuButton>
+          <RefreshIcon />
+        </MenuButton>
+        <MenuDivider />
+        <MenuButton>
+          <PlusIcon />
+        </MenuButton>
+        <MenuButton>
+          <DelIcon />
+        </MenuButton>
+        <MenuDivider />
+        <MenuButton $disabled>
+          <UndoIcon />
+        </MenuButton>
+        <MenuButton $disabled>
+          <CommitIcon />
+        </MenuButton>
+        <MenuDivider />
+        <MenuButton $active={showFilter} onClick={() => setShowFilter(!showFilter)}>
+          <FunnelIcon />
+        </MenuButton>
+      </MenuBar>
+      {showFilter ? (
+        <Filter header={props.table.data.header} onChange={setFilter} />
+      ) : null}
 
       {React.useMemo(
         () => (
@@ -216,6 +314,34 @@ export const TableView: React.FC<TableViewProps> = (props) => {
     </>
   );
 };
+
+const MenuBar = styled.div`
+  display: flex;
+  color: #dcdcdc;
+  align-items: center;
+  padding: 0.25rem;
+`;
+const MenuButton = styled.div<{ $active?: boolean; $disabled?: boolean }>`
+  ${(props) => (props.$active ? 'color: #008a19;' : '')};
+  ${(props) =>
+    props.$disabled
+      ? 'opacity: 0.5;'
+      : `:hover {
+background: rgba(55, 55, 55, 0.5);
+}`}
+  margin: 0 0.1rem;
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+`;
+
+const MenuDivider = styled.div`
+  border-right: 0.15rem dotted #dcdcdc;
+  height: 1.5rem;
+  opacity: 0.5;
+  margin: 0 0.15rem;
+`;
 
 export const DataWrapper = styled.div`
   border-top: 0.05rem solid #555;
@@ -364,6 +490,16 @@ const Table = styled.table`
 
   tbody td.active {
     box-shadow: inset 0 0 0px 1px red;
+  }
+
+  tbody td.active.edit {
+    padding: 0;
+    ${Input} {
+      padding: 0.3rem 0.65rem; /** table cell height .65 + .1 = .75  */
+      height: 1.5rem;
+      display: inline-block;
+      border-color: red;
+    }
   }
 
   tbody tr:nth-of-type(odd) {

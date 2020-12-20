@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 
 export const TableIcon: React.FC = () => (
   <svg viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -128,5 +129,163 @@ export const CloseIcon: React.FC = () => (
       fillRule="evenodd"
       d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
     />
+  </svg>
+);
+
+export const StartIcon: React.FC = () => (
+  <StartIconWrapper>
+    <PrevIcon style={{ position: 'absolute', top: 0, left: '.25rem' }} />
+    <PrevIcon style={{ position: 'absolute', top: 0, left: '-0.15rem' }} />
+  </StartIconWrapper>
+);
+
+const StartIconWrapper = styled.div`
+  position: relative;
+  width: 1.5rem;
+  height: 1.5rem;
+  &:after {
+    content: '';
+    position: absolute;
+    left: 0.25rem;
+    border-left: 0.15rem solid currentColor;
+    height: 1rem;
+    top: 0.25rem;
+  }
+`;
+
+export const PrevIcon = styled.div`
+  width: 1.5rem;
+  height: 1.5rem;
+  position: relative;
+  &:after {
+    content: '';
+    position: absolute;
+    left: 0rem;
+    top: 0.25rem;
+    border: 0.5rem solid transparent;
+    border-right-color: currentCOlor;
+  }
+`;
+
+export const NextIcon = styled.div`
+  width: 1.5rem;
+  height: 1.5rem;
+  position: relative;
+  &:after {
+    content: '';
+    position: absolute;
+    right: 0rem;
+    top: 0.25rem;
+    border: 0.5rem solid transparent;
+    border-left-color: currentCOlor;
+  }
+`;
+
+export const EndIcon: React.FC = () => (
+  <EndIconWrapper>
+    <NextIcon style={{ position: 'absolute', top: 0, right: '0.25rem' }} />
+    <NextIcon style={{ position: 'absolute', top: 0, right: '-0.15rem' }} />
+  </EndIconWrapper>
+);
+
+const EndIconWrapper = styled.div`
+  position: relative;
+  width: 1.5rem;
+  height: 1.5rem;
+  &:after {
+    content: '';
+    position: absolute;
+    right: 0.25rem;
+    border-right: 0.15rem solid currentColor;
+    height: 1rem;
+    top: 0.25rem;
+  }
+`;
+
+export const PlusIcon = styled.div`
+  width: 1.5rem;
+  height: 1.5rem;
+  position: relative;
+  &:after {
+    content: '';
+    position: absolute;
+    border-top: 0.15rem solid currentCOlor;
+    width: 1rem;
+    left: 0.25rem;
+    top: 0.675rem;
+  }
+  &:before {
+    content: '';
+    position: absolute;
+    border-left: 0.15rem solid currentCOlor;
+    height: 1rem;
+    top: 0.25rem;
+    left: 0.675rem;
+  }
+`;
+
+export const DelIcon = styled.div`
+  width: 1.5rem;
+  height: 1.5rem;
+  position: relative;
+  &:after {
+    content: '';
+    position: absolute;
+    border-top: 0.15rem solid currentCOlor;
+    width: 1rem;
+    left: 0.25rem;
+    top: 0.675rem;
+  }
+`;
+
+export const RefreshIcon: React.FC = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+    <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
+    <path
+      fillRule="evenodd"
+      d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"
+    />
+  </svg>
+);
+
+export const UndoIcon2: React.FC = () => (
+  <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+    <path d="M63.75,35.71h-41L31.46,27a2,2,0,0,0-2.83-2.83L16.46,36.29a2,2,0,0,0-.25.3l0,.08a2,2,0,0,0-.14.26s0,.08,0,.12a2,2,0,0,0-.08.25,2,2,0,0,0,0,.79,2,2,0,0,0,.08.25s0,.08,0,.12a2,2,0,0,0,.14.26l0,.08a2,2,0,0,0,.25.3L28.63,51.29a2,2,0,0,0,2.83-2.83L22.7,39.71h41a16.38,16.38,0,0,1,0,32.75H17.88a2,2,0,0,0,0,4H63.75a20.38,20.38,0,0,0,0-40.75Z"></path>
+  </svg>
+);
+
+export const UndoIcon: React.FC = () => (
+  <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <polygon points="9,12 2,7 9,2 "></polygon>
+    <path
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeMiterlimit="10"
+      d="M2,20h11.5c3.6,0,6.5-2.9,6.5-6.5S17.1,7,13.5,7H6"></path>
+  </svg>
+);
+
+export const FunnelIcon2: React.FC = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+    <path
+      fillRule="evenodd"
+      d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z"
+    />
+  </svg>
+);
+
+export const FunnelIcon: React.FC = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+    <path
+      fillRule="evenodd"
+      d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"
+    />
+  </svg>
+);
+
+export const CommitIcon: React.FC = () => (
+  <svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+    <polygon points="10,10 10,90 19,90 19,19 81,19 81,81 56,81 56,55 56.174,55 68.784,55 50,36.751 31.392,55 44,55 44,90 90,90   90,10 "></polygon>
   </svg>
 );
